@@ -45,7 +45,7 @@ function uuid_schema_alter(&$schema = array()) {
  */
 function uuid_install() {
   foreach (entity_get_info() as $entity_type => $info) {
-    if (isset($info['uuid']) && $info['uuid'] == TRUE) {
+    if (isset($info['entity keys']['uuid']) && !empty($info['entity keys']['uuid'])) {
       $schema = array();
       // Add the UUID columns to the definition.
       uuid_schema_alter($schema);
@@ -65,7 +65,7 @@ function uuid_install() {
 function uuid_uninstall() {
   variable_del('uuid_generator');
   foreach (entity_get_info() as $entity_type => $info) {
-    if (isset($info['uuid']) && $info['uuid'] == TRUE) {
+    if (isset($info['entity keys']['uuid']) && $info['entity keys']['uuid']) {
       $schema = array();
       // Add the UUID columns to the definition.
       uuid_schema_alter($schema);
