@@ -28,7 +28,7 @@ function uuid_schema_alter(&$schema = array()) {
     $altering = FALSE;
 
     foreach ($entity_info as $entity_type => $info) {
-      if (isset($info['uuid']) && $info['uuid'] == TRUE && !empty($info['entity keys']['uuid'])) {
+      if (isset($info['entity keys']['uuid']) && !empty($info['entity keys']['uuid'])) {
         // Add the Universally Unique Identifier column to the definition.
         uuid_schema_generate($schema, $info['base table'], $info['entity keys']['uuid']);
         if (!empty($info['revision table']) && !empty($info['entity keys']['revision uuid'])) {

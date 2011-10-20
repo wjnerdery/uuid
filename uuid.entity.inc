@@ -16,21 +16,16 @@
  * This enables UUID for all core entities.
  */
 function uuid_entity_info_alter(&$info) {
-  $info['node']['uuid'] = TRUE;
   $info['node']['entity keys']['uuid'] = 'uuid';
   $info['node']['entity keys']['revision uuid'] = 'vuuid';
-  $info['user']['uuid'] = TRUE;
   $info['user']['entity keys']['uuid'] = 'uuid';
   if (module_exists('comment')) {
-    $info['comment']['uuid'] = TRUE;
     $info['comment']['entity keys']['uuid'] = 'uuid';
   }
   if (module_exists('file')) {
-    $info['file']['uuid'] = TRUE;
     $info['file']['entity keys']['uuid'] = 'uuid';
   }
   if (module_exists('taxonomy')) {
-    $info['taxonomy_term']['uuid'] = TRUE;
     $info['taxonomy_term']['entity keys']['uuid'] = 'uuid';
   }
 }
@@ -43,7 +38,7 @@ function uuid_entity_info_alter(&$info) {
  */
 function uuid_entity_property_info_alter(&$info) {
   foreach (entity_get_info() as $entity_type => $entity_info) {
-    if (isset($entity_info['uuid']) && $entity_info['uuid'] == TRUE && !empty($entity_info['entity keys']['uuid'])) {
+    if (isset($entity_info['entity keys']['uuid']) && !empty($entity_info['entity keys']['uuid'])) {
       $info[$entity_type]['properties'][$entity_info['entity keys']['uuid']] = array(
         'label' => t('UUID'),
         'type' => 'text',
@@ -67,7 +62,7 @@ function uuid_entity_property_info_alter(&$info) {
  */
 function uuid_entity_load(&$entities, $entity_type) {
   $info = entity_get_info($entity_type);
-  if (isset($info['uuid']) && $info['uuid'] == TRUE && !empty($info['entity keys']['uuid'])) {
+  if (isset($info['entity keys']['uuid']) && !empty($info['entity keys']['uuid'])) {
     $id_key = $info['entity keys']['id'];
     $uuid_key = $info['entity keys']['uuid'];
     if (!empty($info['entity keys']['revision uuid'])) {
@@ -109,7 +104,7 @@ function uuid_entity_load(&$entities, $entity_type) {
  */
 function uuid_entity_presave($entity, $entity_type) {
   $info = entity_get_info($entity_type);
-  if (isset($info['uuid']) && $info['uuid'] == TRUE && !empty($info['entity keys']['uuid'])) {
+  if (isset($info['entity keys']['uuid']) && !empty($info['entity keys']['uuid'])) {
     $uuid_key = $info['entity keys']['uuid'];
     if (empty($entity->{$uuid_key})) {
       $entity->{$uuid_key} = uuid_generate();
@@ -187,7 +182,7 @@ function entity_uuid_save($entity_type, $entity) {
   }
 
   $info = entity_get_info($entity_type);
-  if (isset($info['uuid']) && $info['uuid'] == TRUE && !empty($info['entity keys']['uuid'])) {
+  if (isset($info['entity keys']['uuid']) && !empty($info['entity keys']['uuid'])) {
     // Get the keys for local ID and UUID.
     $id_key = $info['entity keys']['id'];
     $uuid_key = $info['entity keys']['uuid'];
